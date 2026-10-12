@@ -1,0 +1,40 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+/**
+ * @extends Factory<User>
+ */
+class UserFactory extends Factory
+{
+    /**
+     * The current password being used by the factory.
+     */
+    protected static ?string $password;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'nip' => fake()->unique()->numerify('19##########'),
+            'nama' => fake()->name(),
+            'jenis_kelamin' => fake()->randomElement(['L', 'P']),
+            'mata_pelajaran' => fake()->randomElement(['Matematika', 'Bahasa Indonesia', 'IPA', 'IPS', 'Bahasa Inggris']),
+            'no_telepon' => fake()->phoneNumber(),
+            'username' => fake()->unique()->userName(),
+            'password' => static::$password ??= Hash::make('password'),
+            'role' => fake()->randomElement(['admin', 'kasir', 'guru']),
+            'status' => 'aktif',
+            'remember_token' => Str::random(10),
+        ];
+    }
+}
